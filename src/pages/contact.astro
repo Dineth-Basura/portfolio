@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import ContactForm from '../components/ContactForm';
+import {profile,site,contact} from '../lib/data';
+---
+<Layout title={`Contact | ${profile.name}`} description={contact.intro}>
+  <section class="contact-page section-wrap" id="contact">
+    <a class="text-link back-link" href="/">← Back to portfolio</a>
+    <div class="contact-page-heading"><h1>{contact.title}</h1><span aria-hidden="true"></span></div>
+    <div class="contact-page-grid">
+      <div class="contact-page-copy">
+        <p class="contact-page-intro">{contact.intro}</p>
+        <a class="contact-email-card" href={`mailto:${profile.email}`}><span class="contact-email-icon"><Icon name="mail" size={24}/></span><span><span class="mini-label">EMAIL ME</span><strong>{profile.email}</strong></span></a>
+        <div class="contact-social-heading mini-label">SOCIAL MEDIA</div>
+        <div class="contact-page-socials"><a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" title="GitHub"><Icon name="github" size={23}/></a><a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" title="LinkedIn"><Icon name="linkedin" size={23}/></a><a href={site.cv} download aria-label="Download CV" title="Download CV"><Icon name="download" size={23}/></a></div>
+        <p class="contact-location"><Icon name="pin" size={15}/>{profile.location}</p>
+      </div>
+      <div class="contact-form-card"><h2 class="sr-only">{contact.formTitle}</h2><ContactForm client:load copy={contact} fromName={`${profile.name} portfolio`}/></div>
+    </div>
+  </section>
+</Layout>
