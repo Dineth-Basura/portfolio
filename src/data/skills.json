@@ -55,6 +55,20 @@
       ]
     },
     {
+      "title": "Cloud skills",
+      "subtitle": "Working with cloud infrastructure and security.",
+      "icon": "cloud",
+      "items": [
+        "Amazon Web Services (AWS)",
+        "AWS IAM",
+        "Amazon EC2",
+        "Amazon S3",
+        "Amazon VPC",
+        "Amazon CloudWatch",
+        "AWS CloudTrail"
+      ]
+    },
+    {
       "title": "Operating systems",
       "subtitle": "Comfortable close to the system.",
       "icon": "monitor",

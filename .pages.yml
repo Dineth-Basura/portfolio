@@ -354,6 +354,7 @@ content:
                 - terminal
                 - monitor
                 - database
+                - cloud
           - name: items
             label: Items
             type: string
