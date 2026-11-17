@@ -12,7 +12,7 @@ repository: https://github.com/Dineth-Basura/Ace---Photographers-Booking-Java-We
 additionalRepositories: []
 visual: generic
 screenshots: []
-image: /images/projects/ace-photographers-v2.webp
+image: /images/projects/ace-photographers-v3.webp
 imageAlt: Conceptual illustration for Ace Photographers Booking
 imageType: concept
 ---

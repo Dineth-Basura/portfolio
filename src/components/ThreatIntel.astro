@@ -1,0 +1,179 @@
+<section id="intel" class="section-wrap command-section">
+  <p class="console-label">// Live intelligence</p>
+  <h2>KNOWN EXPLOITED<br/><em>VULNERABILITIES.</em></h2>
+  <div class="intel-console" data-intel data-motion>
+    <header>
+      <div><p class="console-label">CISA / KEV</p><h3>Vulnerability observatory</h3></div>
+      <a class="text-link" href="https://github.com/cisagov/kev-data">Official feed ↗</a>
+    </header>
+    <div class="record-controls" data-intel-controls hidden>
+      <label>Search the catalog <input type="search" data-intel-search maxlength="100" placeholder="CVE, vendor, product"/></label>
+      <label>Sort by <select data-intel-sort><option value="new">Newest added</option><option value="vendor">Vendor</option></select></label>
+      <button type="button" class="button secondary" data-intel-refresh>Refresh feed</button>
+    </div>
+    <div class="intel-dashboard">
+      <section class="intel-activity" aria-labelledby="intel-activity-title">
+        <h4 class="console-label" id="intel-activity-title">Catalog additions by month</h4>
+        <p data-intel-chart-summary>Monthly counts appear when the CISA catalog loads.</p>
+        <div class="intel-bars" data-intel-bars aria-hidden="true"></div>
+        <p class="intel-chart-caption">Six calendar months through the catalog publication date.</p>
+        <button class="filter-button intel-motion-toggle" type="button" aria-pressed="false" data-intel-motion-toggle hidden>Pause chart motion</button>
+      </section>
+      <div class="intel-feed">
+        <h4 class="console-label">Catalog entries</h4>
+        <p role="status" class="record-status" data-intel-status>Open the official feed to view catalog entries.</p>
+        <ul class="kev-records" data-intel-results></ul>
+        <button type="button" class="button secondary" data-intel-more hidden>Show more records</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { z } from 'astro/zod';
+  const catalogSchema = z.object({
+    dateReleased: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])-\d{2}/),
+    vulnerabilities: z.array(z.object({
+      cveID: z.string().regex(/^CVE-\d{4}-\d+$/),
+      vendorProject: z.string(),
+      product: z.string(),
+      vulnerabilityName: z.string(),
+      dateAdded: z.string(),
+    })),
+  });
+  const panel = document.querySelector<HTMLElement>('[data-intel]');
+  const controls = panel?.querySelector<HTMLElement>('[data-intel-controls]');
+  const refresh = panel?.querySelector<HTMLButtonElement>('[data-intel-refresh]');
+  const more = panel?.querySelector<HTMLButtonElement>('[data-intel-more]');
+  const search = panel?.querySelector<HTMLInputElement>('[data-intel-search]');
+  const sort = panel?.querySelector<HTMLSelectElement>('[data-intel-sort]');
+  const status = panel?.querySelector<HTMLElement>('[data-intel-status]');
+  const results = panel?.querySelector<HTMLUListElement>('[data-intel-results]');
+  const bars = panel?.querySelector<HTMLElement>('[data-intel-bars]');
+  const chartSummary = panel?.querySelector<HTMLElement>('[data-intel-chart-summary]');
+  const activity = panel?.querySelector('.intel-activity');
+  const motionToggle = panel?.querySelector<HTMLButtonElement>('[data-intel-motion-toggle]');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  if (activity && motionToggle) {
+    let visible = false;
+    let paused = false;
+    const syncMotion = () => {
+      const animate = visible && !paused && !reducedMotion.matches && !document.hidden;
+      activity.classList.toggle('intel-activity-moving', animate);
+      motionToggle.hidden = reducedMotion.matches;
+    };
+    const motionObserver = new IntersectionObserver(([entry]) => {
+      visible = entry?.isIntersecting ?? false;
+      syncMotion();
+    });
+    motionObserver.observe(activity);
+    motionToggle.addEventListener('click', () => {
+      paused = !paused;
+      motionToggle.setAttribute('aria-pressed', String(paused));
+      syncMotion();
+    });
+    reducedMotion.addEventListener('change', syncMotion);
+    document.addEventListener('visibilitychange', syncMotion);
+    syncMotion();
+  }
+  let catalog: z.infer<typeof catalogSchema> | undefined;
+  let retrievedAt: Date | undefined;
+  let displayCount = 6;
+  let updating = false;
+  let unavailable = false;
+
+  function renderActivity(data: z.infer<typeof catalogSchema>) {
+    if (!bars || !chartSummary) return;
+    const [year, month] = data.dateReleased.slice(0, 7).split('-').map(Number);
+    const formatter = new Intl.DateTimeFormat('en', {month:'short', timeZone:'UTC'});
+    const months = Array.from({length:6}, (_, index) => {
+      const date = new Date(Date.UTC(year, month - 6 + index, 1));
+      return {label:formatter.format(date), key:date.toISOString().slice(0,7), count:0};
+    });
+    const byMonth = new Map(months.map(entry => [entry.key,entry]));
+    for (const {dateAdded} of data.vulnerabilities) {
+      const entry = byMonth.get(dateAdded.slice(0,7));
+      if (entry) entry.count++;
+    }
+    const max = Math.max(1, ...months.map(entry => entry.count));
+    bars.replaceChildren(...months.map(({label,count}) => {
+      const column = document.createElement('div');
+      const fill = document.createElement('span');
+      const caption = document.createElement('span');
+      caption.textContent = label;
+      fill.style.setProperty('--bar-height', `${(count / max) * 100}%`);
+      fill.textContent = String(count);
+      column.append(fill,caption);
+      return column;
+    }));
+    chartSummary.textContent = months.map(({label,count}) => `${label}: ${count}`).join(' · ');
+  }
+
+  function render() {
+    if (!catalog || !status || !results || !more) return;
+    const query = search?.value.trim().toLowerCase() ?? '';
+    const matches = catalog.vulnerabilities
+      .filter(row => [row.cveID, row.vendorProject, row.product, row.vulnerabilityName].join(' ').toLowerCase().includes(query))
+      .sort((a,b) => sort?.value === 'vendor'
+        ? a.vendorProject.localeCompare(b.vendorProject) || b.dateAdded.localeCompare(a.dateAdded)
+        : b.dateAdded.localeCompare(a.dateAdded) || a.cveID.localeCompare(b.cveID));
+    results.replaceChildren(...matches.slice(0, displayCount).map(row => {
+      const item = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = 'https://www.cve.org/CVERecord?id=' + row.cveID;
+      link.textContent = row.cveID;
+      const details = document.createElement('div');
+      const title = document.createElement('strong');
+      title.textContent = row.vulnerabilityName;
+      const metadata = document.createElement('p');
+      metadata.textContent = row.vendorProject + ' / ' + row.product + ' · Added ' + row.dateAdded;
+      details.append(title, metadata);
+      item.append(link, details);
+      return item;
+    }));
+    status.textContent = (unavailable ? 'Source unavailable. Showing the last retrieved catalog. ' : '')
+      + (matches.length ? 'Showing ' + Math.min(displayCount, matches.length) + ' of ' + matches.length : 'No matching records')
+      + ' · Catalog published ' + catalog.dateReleased.slice(0, 10) + ' · Retrieved ' + retrievedAt?.toLocaleString();
+    more.hidden = matches.length <= displayCount;
+  }
+
+  async function update() {
+    if (updating || !refresh || !status) return;
+    updating = true;
+    refresh.disabled = true;
+    status.textContent = 'Fetching the CISA catalog…';
+    try {
+      const response = await fetch('https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json', {
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!response.ok) throw new Error('Catalog request failed');
+      catalog = catalogSchema.parse(await response.json());
+      renderActivity(catalog);
+      retrievedAt = new Date();
+      unavailable = false;
+      render();
+    } catch {
+      unavailable = true;
+      if (catalog) render();
+      else status.textContent = 'Source unavailable. Retry or open the official feed.';
+    } finally {
+      updating = false;
+      refresh.disabled = false;
+      refresh.textContent = unavailable ? 'Retry feed' : 'Refresh feed';
+    }
+  }
+
+  if (panel && controls && refresh) {
+    controls.hidden = false;
+    refresh.addEventListener('click', () => { void update(); });
+    [search, sort].forEach(control => control?.addEventListener('input', () => { displayCount = 6; render(); }));
+    more?.addEventListener('click', () => { displayCount += 6; render(); });
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        observer.disconnect();
+        if (!catalog) void update();
+      }
+    }, { rootMargin: '150px' });
+    observer.observe(panel);
+  }
+</script>

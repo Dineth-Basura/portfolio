@@ -7,6 +7,9 @@ order: 90
 featured: false
 visible: false
 repository: https://github.com/Dineth-Basura/Dina-ai-chatbot
+image: /images/projects/dina-ai-chatbot-v3.webp
+imageAlt: Charcoal and copper concept artwork for dina-ai-chatbot
+imageType: concept
 visual: generic
 ---
 

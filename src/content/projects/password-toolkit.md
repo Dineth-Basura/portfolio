@@ -15,7 +15,7 @@ repository: https://github.com/Dineth-Basura/password-toolkit
 additionalRepositories: []
 visual: password
 screenshots: []
-image: /images/projects/password-toolkit-v2.webp
+image: /images/projects/password-toolkit-v3.webp
 imageAlt: Conceptual illustration for Password Strength Checker
 imageType: concept
 ---

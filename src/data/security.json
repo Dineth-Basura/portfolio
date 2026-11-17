@@ -1,0 +1,103 @@
+{
+  "groups": [
+    {
+      "name": "Application Security",
+      "summary": "Web and API security assessment and finding validation.",
+      "tools": [
+        "Burp Suite",
+        "OWASP ZAP",
+        "Nmap",
+        "Nuclei",
+        "SQLmap",
+        "Dalfox",
+        "Subfinder",
+        "dnsx",
+        "WhatWeb",
+        "Katana",
+        "ffuf"
+      ],
+      "project": "vulnforge"
+    },
+    {
+      "name": "Detection & Investigation",
+      "summary": "Network inspection, log analysis, and detection workflows.",
+      "tools": [
+        "Splunk",
+        "Wazuh",
+        "Sysmon",
+        "Suricata",
+        "Wireshark",
+        "MITRE ATT&CK"
+      ]
+    },
+    {
+      "name": "Security Automation",
+      "summary": "Repeatable Python pipelines and structured findings reports.",
+      "tools": [
+        "Python",
+        "asyncio",
+        "Bash",
+        "PowerShell",
+        "SQLite",
+        "YAML",
+        "JSON",
+        "SARIF 2.1"
+      ],
+      "project": "vulnforge"
+    },
+    {
+      "name": "Cloud & DevSecOps",
+      "summary": "Cloud controls, infrastructure configuration, and development workflows.",
+      "tools": [
+        "AWS IAM",
+        "EC2",
+        "S3",
+        "VPC",
+        "CloudWatch",
+        "CloudTrail",
+        "GuardDuty",
+        "Terraform",
+        "GitHub Actions",
+        "Docker"
+      ],
+      "project": "meridian-transfer"
+    },
+    {
+      "name": "Programming & Systems",
+      "summary": "Languages and environments used in projects and coursework.",
+      "tools": [
+        "Python",
+        "Java",
+        "C",
+        "JavaScript",
+        "SQL",
+        "Bash",
+        "PowerShell",
+        "Linux",
+        "Windows"
+      ],
+      "project": "platex"
+    }
+  ],
+  "activities": [
+    {
+      "title": "WSO2 Innovate with Ballerina Hackathon",
+      "logo": "/images/logos/wso2.webp",
+      "description": "Contributed to RescuePulse, a team-built emergency-response research platform using Ballerina services and Docker.",
+      "url": "https://certificates.ballerina.io/IWB25P-RGB2r8kTVq",
+      "action": "View participation certificate"
+    },
+    {
+      "title": "NASA Space Apps Challenge 2026",
+      "logo": "/images/logos/nasa.webp",
+      "description": "Participated and developed an interactive space mission design game.",
+      "url": "https://github.com/Dineth-Basura/SELENE-VECTOR",
+      "action": "View project"
+    },
+    {
+      "title": "SLIIT Taekwondo Team",
+      "logo": "/images/logos/world-taekwondo.webp",
+      "description": "Team member."
+    }
+  ]
+}

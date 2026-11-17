@@ -13,7 +13,7 @@ additionalRepositories:
   - https://github.com/JayashanManodya/RailLink
 visual: generic
 screenshots: []
-image: /images/projects/raillink-v2.webp
+image: /images/projects/raillink-v3.webp
 imageAlt: Conceptual illustration for RailLink
 imageType: concept
 ---

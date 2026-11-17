@@ -14,7 +14,7 @@ additionalRepositories:
   - https://github.com/IT24102850/RescuePulse
 visual: generic
 screenshots: []
-image: /images/projects/rescuepulse-v2.webp
+image: /images/projects/rescuepulse-v3.webp
 imageAlt: Conceptual illustration for RescuePulse
 imageType: concept
 ---

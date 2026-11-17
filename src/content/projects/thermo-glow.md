@@ -7,6 +7,9 @@ order: 91
 featured: false
 visible: false
 repository: https://github.com/Dineth-Basura/Thermo_Glow
+image: /images/projects/thermo-glow-v3.webp
+imageAlt: Charcoal and copper concept artwork for thermo-glow
+imageType: concept
 visual: generic
 ---
 

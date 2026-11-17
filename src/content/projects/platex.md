@@ -17,7 +17,7 @@ repository: https://github.com/Dineth-Basura/PlateX-AI-License-Plate-Detection-R
 additionalRepositories: []
 visual: plate
 screenshots: []
-image: /images/projects/platex-v2.webp
+image: /images/projects/platex-v3.webp
 imageAlt: Conceptual illustration for PlateX
 imageType: concept
 ---

@@ -17,7 +17,7 @@ repository: https://github.com/Dineth-Basura/Online_Book_Store
 additionalRepositories: []
 visual: book
 screenshots: []
-image: /images/projects/online-book-store-v2.webp
+image: /images/projects/online-book-store-v3.webp
 imageAlt: Conceptual illustration for Online Book Store
 imageType: concept
 ---

@@ -1,0 +1,31 @@
+<aside class="identity-signal" data-identity aria-label="Fingerprint animation">
+  <div class="identity-art" aria-hidden="true">
+    <video src="/videos/fingerprint-scan.mp4" poster="/images/fingerprint-scan.webp" width="800" height="800" muted loop playsinline preload="none"></video>
+  </div>
+  <button type="button" class="filter-button" aria-pressed="false" hidden>Pause fingerprint</button>
+</aside>
+<script>
+  const panel = document.querySelector<HTMLElement>('[data-identity]');
+  const video = panel?.querySelector('video');
+  const button = panel?.querySelector('button');
+  const preference = matchMedia('(prefers-reduced-motion: reduce)');
+  if (panel && video && button) {
+    let visible = false;
+    let paused = false;
+    const sync = () => {
+      button.hidden = preference.matches;
+      if (visible && !paused && !preference.matches && !document.hidden) void video.play().catch(() => {});
+      else video.pause();
+    };
+    new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); }).observe(panel);
+    button.addEventListener('click', () => {
+      paused = !paused;
+      button.setAttribute('aria-pressed', String(paused));
+      button.textContent = paused ? 'Play fingerprint' : 'Pause fingerprint';
+      sync();
+    });
+    preference.addEventListener('change', sync);
+    document.addEventListener('visibilitychange', sync);
+    sync();
+  }
+</script>

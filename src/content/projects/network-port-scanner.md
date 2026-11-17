@@ -15,7 +15,7 @@ repository: https://github.com/Dineth-Basura/Network-port-Scanner
 additionalRepositories: []
 visual: network
 screenshots: []
-image: /images/projects/network-port-scanner-v2.webp
+image: /images/projects/network-port-scanner-v3.webp
 imageAlt: Conceptual illustration for Network Port Scanner
 imageType: concept
 ---

@@ -17,7 +17,7 @@ additionalRepositories:
   - https://github.com/It24100927/GYM-Management-System
 visual: gym
 screenshots: []
-image: /images/projects/gym-management-v2.webp
+image: /images/projects/gym-management-v3.webp
 imageAlt: Conceptual illustration for Gym Management System
 imageType: concept
 ---

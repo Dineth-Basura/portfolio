@@ -1,90 +1,82 @@
 {
   "categories": [
     {
-      "title": "Cybersecurity & networking",
-      "subtitle": "Understanding systems. Finding the edges.",
-      "icon": "shield",
+      "title": "Application Security",
+      "subtitle": "Web and API security assessment and finding validation.",
+      "icon": "code",
       "items": [
-        "TCP/IP",
-        "Socket programming",
-        "SYN scanning",
-        "Vulnerability assessment",
-        "OS fingerprinting",
-        "CVE / NVD integration",
-        "Network communication",
-        "Multithreading"
+        "Burp Suite",
+        "OWASP ZAP",
+        "Nmap",
+        "Nuclei",
+        "SQLmap",
+        "Dalfox",
+        "Subfinder",
+        "dnsx",
+        "WhatWeb",
+        "Katana",
+        "ffuf"
       ]
     },
     {
-      "title": "Programming",
-      "subtitle": "Turning a problem into a working solution.",
+      "title": "Detection & Investigation",
+      "subtitle": "Network inspection, log analysis, and detection workflows.",
+      "icon": "code",
+      "items": [
+        "Splunk",
+        "Wazuh",
+        "Sysmon",
+        "Suricata",
+        "Wireshark",
+        "MITRE ATT&CK"
+      ]
+    },
+    {
+      "title": "Security Automation",
+      "subtitle": "Repeatable Python pipelines and structured findings reports.",
+      "icon": "code",
+      "items": [
+        "Python",
+        "asyncio",
+        "Bash",
+        "PowerShell",
+        "SQLite",
+        "YAML",
+        "JSON",
+        "SARIF 2.1"
+      ]
+    },
+    {
+      "title": "Cloud & DevSecOps",
+      "subtitle": "Cloud controls, infrastructure configuration, and development workflows.",
+      "icon": "code",
+      "items": [
+        "AWS IAM",
+        "EC2",
+        "S3",
+        "VPC",
+        "CloudWatch",
+        "CloudTrail",
+        "GuardDuty",
+        "Terraform",
+        "GitHub Actions",
+        "Docker"
+      ]
+    },
+    {
+      "title": "Programming & Systems",
+      "subtitle": "Languages and environments used in projects and coursework.",
       "icon": "code",
       "items": [
         "Python",
         "Java",
         "C",
+        "JavaScript",
         "SQL",
-        "JavaScript"
-      ]
-    },
-    {
-      "title": "Frameworks & libraries",
-      "subtitle": "Building across the stack.",
-      "icon": "layers",
-      "items": [
-        "React",
-        "Spring Boot",
-        "Express.js",
-        "Node.js",
-        "PaddleOCR",
-        "YOLOv12"
-      ]
-    },
-    {
-      "title": "Tools & technologies",
-      "subtitle": "The instruments behind the work.",
-      "icon": "terminal",
-      "items": [
-        "Wireshark",
-        "Nmap",
-        "Burp Suite",
-        "Git",
-        "GitHub",
-        "Docker",
-        "Docker Compose"
-      ]
-    },
-    {
-      "title": "Cloud skills",
-      "subtitle": "Working with cloud infrastructure and security.",
-      "icon": "cloud",
-      "items": [
-        "Amazon Web Services (AWS)",
-        "AWS IAM",
-        "Amazon EC2",
-        "Amazon S3",
-        "Amazon VPC",
-        "Amazon CloudWatch",
-        "AWS CloudTrail"
-      ]
-    },
-    {
-      "title": "Operating systems",
-      "subtitle": "Comfortable close to the system.",
-      "icon": "monitor",
-      "items": [
+        "Bash",
+        "PowerShell",
         "Linux",
-        "Kali Linux",
         "Windows"
-      ]
-    },
-    {
-      "title": "Databases",
-      "subtitle": "Making information useful.",
-      "icon": "database",
-      "items": [
-        "MySQL",
-        "MongoDB"
       ]
     }
   ],

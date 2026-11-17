@@ -1,0 +1,54 @@
+/* Layout-only finishing pass. Motion definitions and controls remain unchanged. */
+.command-section,.projects-section{padding-block:clamp(40px,4.5vw,68px)}
+.command-section h2,.projects-section .section-heading h2{font-size:clamp(32px,4.5vw,64px);margin-top:10px;line-height:1.05}
+.command-section:after{margin-top:20px}
+.operator-profile{grid-template-columns:minmax(180px,.65fr) 1fr;gap:clamp(24px,4vw,56px);margin-top:26px}
+.operator-portrait{max-width:340px;width:100%;justify-self:center}
+.operator-profile h3{font-size:clamp(36px,4.5vw,64px);margin:10px 0 18px;line-height:1}
+.identity-signal{grid-template-columns:90px 1fr auto;margin-top:22px;padding:12px 20px;gap:20px}
+.identity-art{height:90px}
+.command-metrics,.command-grid{margin-top:24px}
+.command-metrics div,.command-card{padding:20px}
+.command-metrics strong{font-size:clamp(28px,3.5vw,46px)}
+.credentials-grid{margin-top:12px}
+.credentials-grid .command-card{min-height:0}
+.credential-header h3{font-size:20px;line-height:1.2}
+.command-card h3{font-size:23px}
+.command-card p:not(.console-label){margin-bottom:10px}
+.arsenal-console,.intel-console,.constellation,.journey-details{margin-top:24px}
+.arsenal-row{padding:16px 24px;gap:14px}
+.arsenal-row h3{font-size:clamp(21px,2vw,29px)}
+.intel-console,.constellation{padding:24px}
+.record-controls{margin-top:20px;gap:12px}
+.intel-activity,.intel-feed{padding:18px}
+.capability-title{margin-top:24px}
+.command-details{margin-top:12px}
+.command-details summary{padding-block:13px}
+.projects-section .section-heading{margin-bottom:24px}
+.projects-section .projects-grid{gap:20px}
+.projects-section .project-copy{min-height:0;padding:20px}
+.projects-section .project-image-link{aspect-ratio:1.65;height:auto}
+.projects-section .tech-list{margin:16px 0 12px}
+.projects-section .project-image-label{margin-bottom:14px}
+.projects-section .project-links{padding-top:6px}
+.guardian-hero{min-height:min(740px,calc(100svh - 72px));padding-top:28px;padding-bottom:22px;column-gap:24px;row-gap:0}
+.guardian-copy{padding-block:18px}
+.guardian-copy h1{font-size:clamp(60px,7.2vw,110px);margin-block:20px}
+.guardian-stage{max-width:560px;width:100%;justify-self:center}
+.guardian-role{margin-bottom:14px}
+.guardian-actions{margin-top:22px}
+.guardian-specialties{margin-top:20px}
+.guardian-bottom{padding-top:16px}
+.site-footer{padding-block:26px}
+@media(min-width:1000px){#skills .command-details{display:grid;grid-template-columns:1fr 1fr;column-gap:28px;align-items:start}}
+@media(max-width:800px){.guardian-hero{min-height:0;padding-top:24px}.guardian-stage{max-width:340px;margin-top:0}.guardian-copy{padding-block:12px}.guardian-bottom{margin-top:12px}.guardian-copy h1{font-size:clamp(58px,12vw,90px)}}
+@media(max-width:768px){.operator-profile{grid-template-columns:1fr;gap:22px}.operator-portrait{max-width:280px}.identity-signal{grid-template-columns:72px 1fr;padding:12px;gap:12px}.identity-art{height:72px}.identity-signal button{grid-column:2}.intel-console,.constellation{padding:18px}.command-card{padding:18px}.projects-section .project-copy{min-height:0}.projects-section .project-image-link{height:auto}.command-section,.projects-section{padding-block:36px}}
+/* Fingerprint occupies the contact section's existing right-hand space. */
+#contact .contact-finale{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(220px,1fr);align-items:center;gap:24px}
+#contact .contact-finale:after{display:none}
+#contact .identity-signal{display:flex;flex-direction:column;justify-content:center;gap:10px;margin:0;padding:0;border:0;background:transparent;overflow:visible}
+#contact .identity-art{width:min(100%,300px);height:auto;aspect-ratio:1;background:transparent;border-radius:0}
+#contact .identity-art video{display:block;mix-blend-mode:multiply}
+:root[data-theme='dark'] #contact .identity-art video{mix-blend-mode:screen}
+#contact .identity-signal button{font-size:11px}
+@media(max-width:768px){#contact .contact-finale{grid-template-columns:1fr;gap:20px}#contact .identity-art{width:170px}}

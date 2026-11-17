@@ -1,0 +1,27 @@
+---
+import {profile,site} from '../lib/data';
+---
+<section id="home" class="guardian-hero section-wrap" data-motion>
+ <div class="guardian-grid" aria-hidden="true"></div>
+ <div class="guardian-copy">
+  <p class="console-label">Security engineering / Sri Lanka</p>
+  <h1>DINETH<br/><span>BASURA.</span></h1>
+  <p class="guardian-role">Building tools.<br/>Strengthening defenses.</p>
+  <p class="guardian-intro">{profile.intro}</p>
+  <div class="guardian-actions"><a class="button primary" href="#projects">Explore my work ↗</a><a class="button secondary" href={site.cv} download>Download CV ↓</a></div>
+  <p class="guardian-specialties">APPLICATION SECURITY <span>/</span> SECURITY AUTOMATION</p>
+ </div>
+ <div class="guardian-stage">
+  <div class="guardian-halo" aria-hidden="true"></div>
+  <div class="guardian-orbit" aria-hidden="true"></div>
+  <img class="guardian-robot" src="/images/security-guardian.webp" alt="Obsidian security guardian robot with glowing copper visor and armor" width="1024" height="1024" fetchpriority="high"/>
+  <div class="guardian-sweep" aria-hidden="true"></div>
+  <span class="guardian-tag">DB / DIGITAL GUARDIAN</span>
+  <span class="guardian-caption">CONCEPT / 001</span>
+ </div>
+ <div class="guardian-bottom"><a href="#about">Discover the person behind the work ↓</a><button class="filter-button" data-ambient-toggle aria-pressed="false" hidden>Pause ambient motion</button></div>
+</section>
+<script>
+ const toggle=document.querySelector<HTMLButtonElement>('[data-ambient-toggle]');
+ if(toggle){toggle.hidden=false;toggle.addEventListener('click',()=>{const paused=document.documentElement.classList.toggle('ambient-paused');toggle.setAttribute('aria-pressed',String(paused));toggle.textContent=paused?'Resume ambient motion':'Pause ambient motion';});}
+</script>

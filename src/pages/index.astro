@@ -1,35 +1,237 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Icon from '../components/Icon.astro';
-import Portrait from '../components/Portrait.astro';
-import NetworkVisual from '../components/NetworkVisual.astro';
-import TechStack from '../components/TechStack.astro';
-import JourneyVisual from '../components/JourneyVisual.astro';
 import ProjectsSection from '../components/ProjectsSection.astro';
-import {profile,site,skills,contact} from '../lib/data';
+import ThreatIntel from '../components/ThreatIntel.astro';
+import DinuAssistant from '../components/DinuAssistant.astro';
+import Icon from '../components/Icon.astro';
+import GuardianHero from '../components/GuardianHero.astro';
+import IdentitySignal from '../components/IdentitySignal.astro';
+import {profile,site} from '../lib/data';
+import security from '../data/security.json';
 import {getCollection} from 'astro:content';
-const projects=(await getCollection('projects',({data})=>data.visible)).sort((a,b)=>Number(b.data.featured)-Number(a.data.featured)||a.data.order-b.data.order);
-const certificates=(await getCollection('certifications',({data})=>data.visible)).sort((a,b)=>a.data.order-b.data.order);
-const experience=(await getCollection('experience',({data})=>data.visible)).sort((a,b)=>a.data.order-b.data.order);
-const education=experience.filter(e=>e.data.kind==='Education').at(-1);
-const journey=experience.filter(e=>e.data.kind!=='Activity');
-const nameParts=profile.name.split(' ');
+const projects = (await getCollection('projects', ({data}) => data.visible))
+  .sort((a,b) => Number(b.data.featured) - Number(a.data.featured) || a.data.order - b.data.order);
+const credentials = (await getCollection('certifications', ({data}) => data.visible))
+  .sort((a,b) => a.data.order - b.data.order);
+const education = (await getCollection('experience', ({data}) => data.visible && data.kind === 'Education'))
+  .sort((a,b) => a.data.order - b.data.order);
+const degree = education.find(entry => entry.id === 'sliit')?.data;
+const featured = projects.filter(project => project.data.featured).slice(0, 3);
+const projectIds = new Set(projects.map(project => project.id));
+const featuredProjectNames = featured.map(project => project.data.title);
+const issuers = [...new Set(credentials.map(entry => entry.data.issuer))].sort();
+const issuerLogos: Record<string, string> = {
+  Alison: '/images/logos/alison.webp',
+  'British Council': '/images/logos/british-council.webp',
+  'AWS Academy': '/images/logos/aws.webp',
+  Cisco: '/images/logos/cisco.webp',
+  'Cisco Networking Academy': '/images/logos/cisco.webp',
+  Fortinet: '/images/logos/fortinet.webp',
+  Qualys: '/images/logos/qualys.webp',
+  'Securiti AI': '/images/logos/securiti.webp',
+  SLIIT: '/images/sliit-logo.png',
+};
+const marquee = ['Python', 'Burp Suite', 'Splunk', 'AWS', 'Wazuh', 'Docker', 'MITRE ATT&CK'];
+const latestProjectYear = Math.max(...featured.map(project => Number(project.data.date)).filter(Number.isFinite));
+const metrics = [
+  {value: 20, suffix: '+', label: 'Projects'},
+  ...(site.showCertifications ? [{value: 15, suffix: '+', label: 'Training and certifications'}] : []),
+  ...(degree ? [{value: 1, suffix: '', label: 'Degree in progress'}] : []),
+  ...(latestProjectYear > 0 ? [{value: latestProjectYear, suffix: '', label: 'Latest featured project year'}] : []),
+] as const;
+const knowledge = [
+  {terms:'name who about dineth profile background',title:'About Dineth',text:profile.intro,url:'#about'},
+  ...projects.map(project => ({terms:project.data.title.toLowerCase(),title:project.data.title,text:project.data.description,url:'/projects/'+project.id+'/'})),
+  {terms:'projects work build github application security',title:'Selected projects',text:featuredProjectNames.join(', '),url:'#projects'},
+  {terms:'tools skills aws cloud automation detection',title:'Technical capabilities',text:'Dineth works with Python, Burp Suite, Splunk, Wazuh, Docker, and AWS security tooling.',url:'#skills'},
+  ...(site.showCertifications ? [{terms:'credentials certification certifications training qualys cisco fortinet',title:'Credentials & training',text:issuers.join(', '),url:'#certifications'}] : []),
+  ...(degree ? [{terms:'education university degree sliit study',title:'Education',text:`${degree.title} at ${degree.organization}. ${degree.description}`,url:site.showExperience ? '#experience' : '#about'}] : []),
+  {terms:'contact email linkedin internship',title:'Contact Dineth',text:'Email '+profile.email+' or use the contact form.',url:'/contact/'},
+];
 ---
 <Layout>
- <section class="hero section-wrap" id="home">
-  <div class="hero-copy"><div class="eyebrow hero-eyebrow"><span class="status-dot"/>{site.introLabel}</div><h1>{nameParts[0].toUpperCase()}<br/><span>{nameParts.slice(1).join(" ").toUpperCase()}</span><i>.</i></h1><p class="hero-headline">{profile.headline.split('\n').map(line=><span>{line}</span>)}</p><div class="hero-message"><span class="message-prompt" aria-hidden="true">&gt;_</span><span class="sr-only">{profile.typedIntro}</span><span data-typewriter aria-hidden="true">{profile.typedIntro}</span></div><p class="hero-intro">{profile.intro}</p><div class="hero-buttons"><a class="button primary" href="#projects">Explore my work <Icon name="arrow" size={18}/></a><a class="button secondary" href={site.cv} download>Download CV <Icon name="download" size={17}/></a></div><div class="hero-socials"><a href={profile.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile"><Icon name="github" size={19}/></a><a href={profile.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile"><Icon name="linkedin" size={19}/></a><span></span><p>{profile.role}</p></div></div>
-  <Portrait src={profile.portrait} alt={profile.portraitAlt} skills={profile.orbitSkills}/>
-  <div class="hero-bottom"><a href="#about"><span class="scroll-pill"><i></i></span>SCROLL TO DISCOVER</a><p><span class="status-dot"/>{profile.status}</p><span class="hero-index">PORTFOLIO / 2026</span></div>
- </section>
- <div class="discipline-strip" aria-hidden="true"><span>CYBERSECURITY</span><i>✳</i><span>SOFTWARE DEVELOPMENT</span><i>✳</i><span>CREATIVE PROBLEM SOLVING</span><i>✳</i><span>CONTINUOUS LEARNING</span></div>
- <section class="section-wrap about-section" id="about">
-  <div class="section-label"><span>01 / ABOUT</span><span>THE PERSON BEHIND THE PROJECTS</span></div>
-  <div class="about-layout"><div data-reveal><h2>{site.aboutTitle.split('\n').map((s,i)=><span class:list={{'muted-heading':i>0}}>{s}</span>)}</h2><div class="about-graphic"><NetworkVisual/><div class="graphic-label">CONNECTING THE DOTS<span>SECURITY / CODE / CURIOSITY</span></div></div></div><div class="about-copy" data-reveal><p class="lead">{profile.bio}</p><p>{profile.aboutDetail}</p><div class="education-note">{education?.data.logo&&<img class="education-logo" src={education.data.logo} alt={education.data.logoAlt||`${education.data.organization} logo`} width="316" height="289" loading="lazy"/>}<div class="education-note-copy"><span class="mini-label">CURRENTLY AT</span><h3>{education?.data.organization}</h3><p>{education?.data.title}</p><span>{education?.data.period}</span></div></div><a class="text-link" href={site.cv} download>The full story, in my CV <Icon name="arrow" size={18}/></a></div></div>
- </section>
- <section class="skills-section" id="skills"><div class="section-wrap"><div class="section-label"><span>02 / CAPABILITIES</span><span>TOOLS FOR THE NEXT CHALLENGE</span></div><div class="section-heading"><h2>{site.skillsTitle.split('\n').map((s,i)=><span class:list={{'muted-heading':i>0}}>{s}</span>)}</h2><p>Different disciplines. One connected mindset.<br/>Built through study and hands-on practice.</p></div><TechStack/><div class="skills-grid">{skills.categories.map((c,i)=><article class="skill-card" data-reveal><div class="skill-card-top"><Icon name={c.icon} size={27}/><span>0{i+1}</span></div><h3>{c.title}</h3><p>{c.subtitle}</p><ul>{c.items.map(s=><li>{s}</li>)}</ul></article>)}</div></div></section>
- <ProjectsSection projects={projects}/>
- {site.showCertifications&&<section class="certifications-section" id="certifications"><div class="section-wrap"><div class="section-label"><span>04 / CERTIFICATIONS</span><span>STAYING A STUDENT OF THE CRAFT</span></div><div class="section-heading"><h2>{site.certificationsTitle}</h2></div><div class="certificates-grid">{certificates.map((c,i)=><article class="certificate" data-reveal><div class="certificate-top"><Icon name="award" size={32}/><span>0{i+1}</span></div>{c.data.image&&<a href={c.data.image} target="_blank" rel="noopener noreferrer"><img src={c.data.image} alt={`${c.data.title} certificate`} width="500" height="350" loading="lazy"/></a>}<span class="mini-label">{c.data.issuer}</span><h3>{c.data.title}</h3>{c.data.date&&<p>{c.data.date}</p>}{c.data.description&&<p>{c.data.description}</p>}{c.data.credentialId&&<p>Credential: {c.data.credentialId}</p>}{c.data.skills.length>0&&<ul class="tech-list">{c.data.skills.map(s=><li>{s}</li>)}</ul>}{c.data.credentialUrl&&<a class="text-link" href={c.data.credentialUrl} target="_blank" rel="noopener noreferrer">View credential <Icon name="arrow" size={16}/></a>}</article>)}</div></div></section>}
- {site.showExperience&&<section class="section-wrap experience-section" id="experience"><div class="section-label"><span>05 / EDUCATION</span><span>ACADEMIC BACKGROUND</span></div><div class="experience-layout"><div class="journey-heading"><h2>{site.experienceTitle}</h2><JourneyVisual/></div><div class="timeline">{journey.map(e=><article class="timeline-item" data-reveal><div class="timeline-dot"></div><div class="timeline-meta"><span>{e.data.kind}</span>{e.data.period&&<span>{e.data.period}</span>}</div><h3>{e.data.title}</h3><p class="timeline-org">{e.data.organization}</p><p>{e.data.description}</p></article>)}</div></div></section>}
- <section class="contact-section" id="contact"><div class="section-wrap"><div class="section-label"><span>06 / WHAT'S NEXT?</span><span>GOOD IDEAS START WITH A CONVERSATION</span></div><div class="contact-layout"><div><div class="eyebrow"><span class="status-dot"/>{profile.status}</div><h2>{site.contactTitle.split('\n').map((s,i)=><span class:list={{accent:i>0}}>{s}</span>)}</h2><p>{site.contactIntro}</p><a class="contact-email" href={`mailto:${profile.email}`}>{profile.email}<Icon name="arrow" size={30}/></a><div><a href="/contact/" class="button primary homepage-contact-button">{contact.homepageButton}<Icon name="arrow" size={18}/></a></div></div><div class="contact-side"><div class="contact-orb" aria-hidden="true"><span>↗</span></div><p><Icon name="pin" size={18}/>{profile.location}</p><div class="contact-links"><a href={profile.github} target="_blank" rel="noopener noreferrer">GitHub <Icon name="arrow" size={16}/></a><a href={profile.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn <Icon name="arrow" size={16}/></a><a href={site.cv} download>Download CV <Icon name="download" size={16}/></a></div></div></div></div></section>
+  <GuardianHero/>
+  <div class="signal-strip" data-motion role="group" aria-label="Technologies">
+    <div class="signal-track">
+      {[false,true].map(duplicate => <p aria-hidden={duplicate}>{marquee.map(tool => <span>{tool}<b>◆</b></span>)}</p>)}
+    </div>
+    <button class="filter-button signal-toggle" type="button" aria-pressed="false" hidden>Pause motion</button>
+  </div>
 
+  <section id="about" class="section-wrap command-section">
+    <p class="console-label">// Operating principle</p>
+    <h2>SECURITY THAT GOES<br/><em>BEYOND THE SCAN.</em></h2>
+    <div class="operator-profile" data-motion>
+      <div class="operator-portrait"><img src={profile.portrait} alt={profile.portraitAlt} width="640" height="640" loading="lazy"/></div>
+      <div><p class="console-label">About me</p><h3>Dineth <em>Basura</em></h3><p>{profile.bio} {profile.aboutDetail}</p>
+        {degree && <p class="education-note">{degree.title} · {degree.organization}</p>}
+        <div class="profile-socials">
+          <a href={profile.linkedin}><Icon name="linkedin" size={19}/> LinkedIn</a>
+          <a href={profile.github}><Icon name="github" size={19}/> GitHub</a>
+          <a href="#contact">Contact ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="command-metrics">{metrics.map(({value,suffix,label}) => <div data-reveal>
+      <strong class="sr-only">{value}{suffix}</strong>
+      <strong aria-hidden="true"><span data-count-to={value}>{value}</span>{suffix}</strong>
+      <span class="metric-label">{label}</span>
+    </div>)}</div>
+  </section>
+
+  <section id="arsenal" class="command-band">
+    <div class="section-wrap command-section">
+      <p class="console-label">// Security arsenal</p>
+      <h2>FROM DISCOVERY<br/><em>TO DEFENSE.</em></h2>
+      <div class="arsenal-console" data-motion>
+        <header><span class="console-label">Security toolkit</span></header>
+        <div class="arsenal-body">
+          <div class="radar-display" aria-hidden="true"><div class="radar-scope"><div class="radar-beam"></div><i></i><i></i><i></i></div></div>
+          <div class="arsenal-list">
+            {security.groups.slice(0,4).map((group,index) => <article class="arsenal-row">
+              <span class="console-label" aria-hidden="true">0{index+1}</span><div><h3>{group.name}</h3><p>{group.summary}</p></div>
+            </article>)}
+          </div>
+        </div>
+        <ul class="tech-list arsenal-tools">{marquee.map(tool => <li>{tool}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+  <ThreatIntel/>
+
+  <section id="skills" class="section-wrap command-section">
+    <p class="console-label">// Skills and tools</p>
+    <h2>THE SECURITY<br/><em>CONSTELLATION.</em></h2>
+    <div class="constellation" data-motion>
+      <svg viewBox="0 0 500 300" preserveAspectRatio="none" aria-hidden="true"><path d="M250 140L90 56M250 140L410 56M250 140L92 242M250 140L409 242M90 56L92 242M410 56L409 242"/></svg>
+      <div class="constellation-nodes" role="group" aria-label="Select a technical capability">
+        {security.groups.map((group,index) => <button class="filter-button" type="button" data-node={index} aria-pressed={index===0}>{group.name}</button>)}
+      </div>
+      {security.groups.map((group,index) => <article data-node-panel={index} hidden={index!==0} class="command-card">
+        <h3>{group.name}</h3><p>{group.summary}</p><p>{group.tools.join(' · ')}</p>
+        {group.project && projectIds.has(group.project) && <a class="text-link" href={'/projects/'+group.project+'/'}>Related project ↗</a>}
+      </article>)}
+    </div>
+    <h3 class="capability-title">Technical capabilities</h3>
+    <div class="command-details">{security.groups.map(group => <details><summary>{group.name}</summary><p>{group.tools.join(' · ')}</p></details>)}</div>
+  </section>
+
+  {site.showCertifications && <section id="certifications" class="command-band">
+    <div class="section-wrap command-section" data-credential-registry>
+      <p class="console-label">// Credential register</p><h2>PROOF BEHIND<br/><em>THE PRACTICE.</em></h2>
+      <div class="record-controls" hidden>
+        <label>Search credentials <input type="search" data-credential-search placeholder="Title or issuer"/></label>
+        <label>Issuer <select data-issuer><option value="">All issuers</option>{issuers.map(issuer => <option>{issuer}</option>)}</select></label>
+        <label>Type <select data-credential-type><option value="">All types</option><option>Certification</option><option>Training</option></select></label>
+      </div>
+      <p class="record-status" data-credential-count role="status">{credentials.length} records</p>
+      <div class="command-grid credentials-grid">
+        {credentials.map(({data}) => <article class="command-card" data-credential data-issuer-name={data.issuer} data-type={data.type} data-search={data.title+' '+data.issuer}>
+          <div class="credential-header">
+            <span class="issuer-mark" aria-hidden="true">
+              {issuerLogos[data.issuer]
+                ? <img src={issuerLogos[data.issuer]} alt="" width="56" height="56" loading="lazy"/>
+                : data.issuer.slice(0,3).toUpperCase()}
+            </span>
+            <div><p class="console-label">{data.issuer} / {data.type}</p><h3>{data.title}</h3></div>
+          </div>
+          {data.date && <p>{data.date}</p>}
+          {data.description && <p>{data.description}</p>}
+          {data.credentialUrl && <a class="text-link" href={data.credentialUrl}>View credential ↗</a>}
+          {data.image && <a class="text-link" href={data.image}>View certificate image ↗</a>}
+        </article>)}
+      </div>
+    </div>
+  </section>}
+
+  <ProjectsSection projects={projects}/>
+  <section id="activities" class="command-band"><div class="section-wrap command-section">
+    <p class="console-label">// Activities and documentation</p><h2>BUILDING BEYOND<br/><em>THE CLASSROOM.</em></h2>
+    <div class="command-grid">{security.activities.map(activity => <article class="command-card" data-reveal>
+      <div class="activity-heading">
+        {activity.logo && <span class="issuer-mark"><img src={activity.logo} alt="" width="56" height="56" loading="lazy"/></span>}
+        <h3>{activity.title}</h3>
+      </div>
+      <p>{activity.description}</p>{activity.url && <a class="text-link" href={activity.url}>{activity.action} ↗</a>}
+    </article>)}</div>
+    <div class="command-links">{featured.map(project => <a href={project.data.repository}>{project.data.title} documentation ↗</a>)}</div>
+  </div></section>
+
+  {site.showExperience && <section id="experience" class="section-wrap command-section">
+    <p class="console-label">// Education</p><h2>THE JOURNEY<br/><em>IN PROGRESS.</em></h2>
+    <div class="command-details journey-details">{education.map(({data}) => <details data-reveal><summary><span>{data.period}</span>{data.title}</summary><p>{data.organization}. {data.description}</p></details>)}</div>
+  </section>}
+
+  <section id="contact" class="command-band"><div class="section-wrap command-section contact-finale">
+    <div class="contact-finale-copy">
+    <p class="console-label">// Contact</p><h2>LET'S BUILD<br/><em>SOMETHING SECURE.</em></h2>
+    <p class="command-intro">Interested in discussing a cybersecurity internship, project, or collaboration? Let's connect.</p>
+    <div class="command-links"><a href={'mailto:'+profile.email}>{profile.email} ↗</a><a href={profile.linkedin}>LinkedIn ↗</a><a href={profile.github}>GitHub ↗</a></div>
+    <div class="hero-buttons"><a href="/contact/" class="button primary">Open contact form ↗</a></div>
+  </div><IdentitySignal/></div></section>
+  <DinuAssistant entries={knowledge}/>
 </Layout>
+
+<script>
+  const metricsRow = document.querySelector('.command-metrics');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  if (metricsRow && !reducedMotion.matches && 'IntersectionObserver' in window) {
+    const counters = [...metricsRow.querySelectorAll<HTMLElement>('[data-count-to]')]
+      .map(element => ({element, value: Number(element.dataset.countTo)}));
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry?.isIntersecting) return;
+      observer.disconnect();
+      const started = performance.now();
+      const tick = (now: number) => {
+        const progress = reducedMotion.matches ? 1 : Math.min((now - started) / 1100, 1);
+        const eased = 1 - (1 - progress) ** 3;
+        counters.forEach(({element,value}) => {
+          element.textContent = String(progress === 1 ? value : Math.floor(value * eased));
+        });
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      tick(started);
+    }, {threshold: 0.2});
+    observer.observe(metricsRow);
+  }
+
+  const motionToggle = document.querySelector<HTMLButtonElement>('.signal-toggle');
+  if (motionToggle) {
+    motionToggle.hidden = false;
+    motionToggle.addEventListener('click', () => {
+      const paused = motionToggle.getAttribute('aria-pressed') !== 'true';
+      motionToggle.setAttribute('aria-pressed', String(paused));
+      motionToggle.closest('.signal-strip')?.classList.toggle('signal-paused', paused);
+    });
+  }
+
+  const nodes = [...document.querySelectorAll<HTMLButtonElement>('[data-node]')];
+  const panels = [...document.querySelectorAll<HTMLElement>('[data-node-panel]')];
+  nodes.forEach((node, index) => node.addEventListener('click', () => {
+    nodes.forEach((button, position) => button.setAttribute('aria-pressed', String(position === index)));
+    panels.forEach((panel, position) => { panel.hidden = position !== index; });
+  }));
+
+  const registry = document.querySelector('[data-credential-registry]');
+  const controls = registry?.querySelector<HTMLElement>('.record-controls');
+  const search = registry?.querySelector<HTMLInputElement>('[data-credential-search]');
+  const issuer = registry?.querySelector<HTMLSelectElement>('[data-issuer]');
+  const type = registry?.querySelector<HTMLSelectElement>('[data-credential-type]');
+  const count = registry?.querySelector('[data-credential-count]');
+  const records = [...(registry?.querySelectorAll<HTMLElement>('[data-credential]') ?? [])];
+  function filterCredentials() {
+    const query = search?.value.trim().toLowerCase() ?? '';
+    let total = 0;
+    records.forEach(record => {
+      record.hidden = !(record.dataset.search?.toLowerCase().includes(query)
+        && (!issuer?.value || record.dataset.issuerName === issuer.value)
+        && (!type?.value || record.dataset.type === type.value));
+      if (!record.hidden) total += 1;
+    });
+    if (count) count.textContent = total ? total + (total === 1 ? ' record' : ' records') : 'No matching credentials';
+  }
+  if (controls) controls.hidden = false;
+  search?.addEventListener('input', filterCredentials);
+  issuer?.addEventListener('change', filterCredentials);
+  type?.addEventListener('change', filterCredentials);
+</script>

@@ -1,0 +1,67 @@
+---
+interface Entry { terms: string; title: string; text: string; url: string }
+interface Props { entries: Entry[] }
+const {entries} = Astro.props;
+---
+<div class="dinu" data-dinu hidden>
+  <button class="dinu-launcher button secondary" type="button" aria-controls="dinu-dialog" aria-haspopup="dialog"><i class="status-dot"></i> Ask Dinu</button>
+  <dialog id="dinu-dialog" aria-labelledby="dinu-heading">
+    <header><div><p class="console-label">PORTFOLIO GUIDE</p><h2 id="dinu-heading">Dinu Intelligence</h2></div><form method="dialog"><button class="button secondary" aria-label="Close Dinu">×</button></form></header>
+    <div class="dinu-messages" role="log" aria-label="Conversation" aria-live="polite"><p>Ask about Dineth’s projects, skills, credentials, or education.</p></div>
+    <div class="dinu-suggestions">
+      {['What is VulnForge?', 'What are his credentials?', 'Where does he study?'].map(question => <button type="button" class="filter-button" data-dinu-question>{question}</button>)}
+    </div>
+    <form class="dinu-form"><label for="dinu-question" class="sr-only">Your question</label><input id="dinu-question" name="question" placeholder="Ask about the portfolio" required maxlength="220"/><button class="button primary">Ask</button></form>
+    <div hidden data-dinu-entries>{entries.map(entry => <div data-terms={entry.terms} data-title={entry.title} data-url={entry.url}>{entry.text}</div>)}</div>
+  </dialog>
+</div>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-dinu]');
+  const dialog = root?.querySelector('dialog');
+  const launcher = root?.querySelector<HTMLButtonElement>('.dinu-launcher');
+  const messages = root?.querySelector<HTMLElement>('.dinu-messages');
+  const input = root?.querySelector<HTMLInputElement>('#dinu-question');
+  const entries = [...(root?.querySelectorAll<HTMLElement>('[data-terms]') ?? [])];
+  const tokenize = (text: string) => text.toLowerCase().match(/[a-z0-9]+/g) ?? [];
+
+  function answer(question: string) {
+    const trimmed = question.trim();
+    if (!messages || !trimmed) return;
+    const words = new Set(tokenize(trimmed));
+    const best = entries.map(entry => {
+      const titleWords = tokenize(entry.dataset.title ?? '');
+      const score = tokenize(entry.dataset.terms ?? '').filter(word => words.has(word)).length;
+      const titleMatch = titleWords.length > 0 && titleWords.every(word => words.has(word));
+      return {entry, score: score + (titleMatch ? 10 : 0)};
+    }).sort((a,b) => b.score-a.score)[0];
+    const prompt = document.createElement('p');
+    prompt.className = 'dinu-prompt';
+    prompt.textContent = trimmed;
+    const reply = document.createElement('p');
+    reply.textContent = best?.score ? best.entry.textContent : 'Try asking about a project by name, credentials, skills, or how to get in touch.';
+    if (best?.score && best.entry.dataset.url) {
+      const link = document.createElement('a');
+      link.href = best.entry.dataset.url;
+      link.textContent = (best.entry.dataset.title ?? 'Learn more') + ' ↗';
+      link.addEventListener('click', () => dialog?.close());
+      reply.append(document.createElement('br'), link);
+    }
+    messages.append(prompt,reply);
+    while (messages.childElementCount > 15) messages.firstElementChild?.remove();
+    messages.scrollTop = messages.scrollHeight;
+    if (input) input.value = '';
+  }
+
+  if (root && dialog && launcher) {
+    root.hidden = false;
+    launcher.addEventListener('click', () => { dialog.showModal(); input?.focus(); });
+    dialog.addEventListener('close', () => launcher.focus());
+    root.querySelector('.dinu-form')?.addEventListener('submit', event => {
+      event.preventDefault();
+      answer(input?.value ?? '');
+    });
+    root.querySelectorAll('[data-dinu-question]').forEach(button => {
+      button.addEventListener('click', () => answer(button.textContent ?? ''));
+    });
+  }
+</script>

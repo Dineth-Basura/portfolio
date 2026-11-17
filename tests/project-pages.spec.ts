@@ -9,9 +9,9 @@ test('pagination exposes every project and filters reset the page',async({page})
   for(const title of await page.locator('.project-card:visible h3').allTextContents()){expect(seen.has(title)).toBe(false);seen.add(title);}
   if(index<3)await page.getByRole('button',{name:'Next project page'}).click();
  }
- expect(seen.size).toBe(11);await expect(page.getByRole('button',{name:'Next project page'})).toBeDisabled();
+ expect(seen.size).toBe(12);await expect(page.getByRole('button',{name:'Next project page'})).toBeDisabled();
  await page.getByRole('button',{name:'Cybersecurity',exact:true}).click();await expect(page.locator('.project-page-status')).toHaveText('Page 1 of 2');
- await page.getByRole('button',{name:'Next project page'}).click();await expect(page.locator('.project-card:visible')).toHaveCount(1);
+ await page.getByRole('button',{name:'Next project page'}).click();await expect(page.locator('.project-card:visible')).toHaveCount(2);
  await page.getByRole('button',{name:'AI / Computer Vision',exact:true}).click();await expect(page.locator('.project-page-status')).toHaveText('Page 1 of 1');await expect(page.getByRole('button',{name:'Next project page'})).toBeDisabled();
 });
 

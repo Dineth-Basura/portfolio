@@ -1,14 +1,14 @@
 {
-  "url": "",
-  "title": "Dineth Basura | Cybersecurity & Software Development Portfolio",
-  "description": "Cybersecurity undergraduate at SLIIT exploring network security, secure software development, and computer vision. Discover Dineth Basura's projects and experience.",
+  "url": "https://www.dineth.online/",
+  "title": "Dineth Basura | Cybersecurity & Application Security Portfolio",
+  "description": "Explore security tools, application security projects, and credentials by Dineth Basura, a cybersecurity undergraduate at SLIIT.",
   "cv": "/cv/Dineth_Basura_CV.pdf",
   "socialImage": "/images/social-card.png",
   "introLabel": "SECURITY MEETS CREATIVITY",
   "aboutTitle": "Curiosity is my\nstrongest tool.",
   "skillsTitle": "A toolkit.\nAlways evolving.",
-  "projectsTitle": "Ideas, engineered.",
-  "projectsIntro": "A selection of hands-on explorations in security, software, and intelligent systems.",
+  "projectsTitle": "PROJECTS",
+  "projectsIntro": "Selected projects in application security, cybersecurity training, and computer vision.",
   "certificationsTitle": "Learning with intent.",
   "experienceTitle": "The journey so far.",
   "contactTitle": "Let's build something\nmeaningful.",
@@ -17,27 +17,31 @@
   "showExperience": true,
   "navigation": [
     {
-      "label": "Home",
-      "id": "home"
-    },
-    {
       "label": "About",
       "id": "about"
+    },
+    {
+      "label": "Arsenal",
+      "id": "arsenal"
+    },
+    {
+      "label": "Live Intel",
+      "id": "intel"
     },
     {
       "label": "Skills",
       "id": "skills"
     },
     {
+      "label": "Credentials",
+      "id": "certifications"
+    },
+    {
       "label": "Projects",
       "id": "projects"
     },
     {
-      "label": "Certifications",
-      "id": "certifications"
-    },
-    {
-      "label": "Education",
+      "label": "Journey",
       "id": "experience"
     },
     {

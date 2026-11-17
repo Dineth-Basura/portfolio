@@ -16,7 +16,7 @@ repository: https://github.com/Dineth-Basura/TCP-Client-Server-System-C
 additionalRepositories: []
 visual: tcp
 screenshots: []
-image: /images/projects/tcp-client-server-v2.webp
+image: /images/projects/tcp-client-server-v3.webp
 imageAlt: Conceptual illustration for TCP Client-Server System
 imageType: concept
 ---

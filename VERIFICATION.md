@@ -95,3 +95,12 @@ The full sixteen-group portfolio/terminal suite passed. After the final mobile v
 The terminal failed in Astro development because its lazy React component was imported before the React refresh preamble. Initialize the plugin's development preamble on launch before loading the component; the production branch omits it and all terminal assets remain on demand. All five terminal test groups now pass against the development server, including the previously failing launch, keyboard controls, CTF, and accessibility checks. The earlier production-only run did not cover this development-specific failure.
 
 Replaced OpenCV with Node.js in the skills categories and animated technology stack, using the local green Devicon Node.js SVG. Historical PlateX project technology details retain their original OpenCV attribution. The existing motion and logo-loading test passes against the updated development site.
+
+## Visual finishing — 2026-11-17
+- Replaced the incorrect WSO2 chart image with the supplied logo asset, attached to the Ballerina activity.
+- Moved fingerprint video to the profile identity panel with visibility-aware playback, pause control, and reduced-motion support.
+- Generated and integrated charcoal/copper concept covers for all 14 project records (12 currently visible).
+- Added reversible heading entrance motion, capability-path animation, project hover transitions, and responsive identity/activity layouts.
+- Astro check: zero errors/warnings. Production build: 15 pages. Static asset audit: 54 image/video/script references, none missing.
+- Browser tests could not complete: local requests fail with ERR_NETWORK_ACCESS_DENIED in this environment. Visual and interactive browser QA remains unverified.
+

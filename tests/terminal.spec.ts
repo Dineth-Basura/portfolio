@@ -12,7 +12,7 @@ const encoded='aGFuZG92ZXI9TVQtMDQyOyBkZXN0aW5hdGlvbj1yZWxheS1ub3J0aDsgY29ycmVsY
 
 test('parser, command registry, evidence locking, validation, and all three stages',async({request})=>{
  expect(parseCommand('   ')).toBeNull();expect(parseCommand('PrOjEcTs "network-port-scanner"')).toEqual({name:'projects',args:['network-port-scanner']});expect(()=>parseCommand('cat "open')).toThrow();expect(()=>parseCommand('a'.repeat(257))).toThrow();
- const response=await request.get('/terminal-data.json');expect(response.ok()).toBe(true);const data=await response.json() as TerminalData;expect(data.projects).toHaveLength(11);expect(JSON.stringify(data)).not.toContain('accessKey');
+ const response=await request.get('/terminal-data.json');expect(response.ok()).toBe(true);const data=await response.json() as TerminalData;expect(data.projects).toHaveLength(12);expect(JSON.stringify(data)).not.toContain('accessKey');
  let session:Session={stage:0,cwd:'/investigation',resetPending:false};let history:string[]=[];
  const exec=(command:string)=>{history.push(command);const result=executeCommand(command,{data,session,history,theme:'dark',now:new Date('2026-10-09T10:00:00Z')})!;if(result.session)session=result.session;return result;};
  expect(exec('whoami').text).toContain(data.profile.name);expect(exec('about').text).toContain(data.profile.bio);expect(exec('skills').text).toContain('Python');expect(exec('projects').text).toContain('meridian-transfer');expect(exec('projects platex').links?.[0].href).toBe('/projects/platex/');expect(exec('projects nonexistent').text).toContain('Unknown project');

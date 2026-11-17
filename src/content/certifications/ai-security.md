@@ -1,11 +1,7 @@
 ---
-title: "AI Security & Governance"
+title: "AI Security & Governance Certified"
 issuer: "Securiti AI"
-order: 2
-featured: false
-visible: true
-description: ""
-skills: []
+type: Certification
+order: 5
+credentialUrl: https://education.securiti.ai/verification/150AE1E83-150AE1CF2-1452CB651/
 ---
-
-

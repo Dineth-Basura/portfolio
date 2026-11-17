@@ -1,9 +1,6 @@
 ---
-title: "AWS Cloud Practitioner Essentials"
+title: "Cloud Practitioner Essentials"
 issuer: "AWS Academy"
+type: Training
 order: 4
-featured: false
-visible: true
-description: ""
-skills: []
 ---

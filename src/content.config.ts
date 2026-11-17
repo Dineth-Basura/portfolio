@@ -19,7 +19,7 @@ const projects = defineCollection({
 });
 const certifications = defineCollection({
   loader: glob({pattern:'**/*.md',base:'./src/content/certifications'}),
-  schema:z.object({title:z.string(),issuer:z.string(),order:z.number().default(100),featured:z.boolean().default(false),visible:z.boolean().default(true),date:z.string().optional(),credentialId:z.string().optional(),credentialUrl:optionalLink,image:z.union([asset,z.literal('')]).optional(),skills:z.array(z.string()).default([]),description:z.string().default('')}),
+  schema:z.object({title:z.string(),issuer:z.string(),type:z.enum(["Certification","Training"]).default("Training"),order:z.number().default(100),featured:z.boolean().default(false),visible:z.boolean().default(true),date:z.string().optional(),credentialId:z.string().optional(),credentialUrl:optionalLink,image:z.union([asset,z.literal('')]).optional(),skills:z.array(z.string()).default([]),description:z.string().default('')}),
 });
 const experience = defineCollection({
   loader:glob({pattern:'**/*.md',base:'./src/content/experience'}),

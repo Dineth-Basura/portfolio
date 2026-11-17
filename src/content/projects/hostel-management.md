@@ -12,7 +12,7 @@ repository: https://github.com/Dineth-Basura/hostel-management
 additionalRepositories: []
 visual: generic
 screenshots: []
-image: /images/projects/hostel-management-v2.webp
+image: /images/projects/hostel-management-v3.webp
 imageAlt: Conceptual illustration for Hostel Management
 imageType: concept
 ---
